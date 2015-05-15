@@ -30,6 +30,8 @@ class Animator: PullToRefreshViewAnimator {
     private var layerLoader: CAShapeLayer = CAShapeLayer()
     private var layerSeparator: CAShapeLayer = CAShapeLayer()
     
+    private let labelTitle = UILabel()
+    
     init() {
     
         layerLoader.lineWidth = 4
@@ -83,10 +85,31 @@ class Animator: PullToRefreshViewAnimator {
         
         layerLoader.path = bezierPathLoader.CGPath
         layerSeparator.path = bezierPathSeparator.CGPath
+        
+        
+        labelTitle.frame = superview.bounds
+        labelTitle.textAlignment = .Center
+        labelTitle.autoresizingMask = .FlexibleLeftMargin | .FlexibleRightMargin
+        labelTitle.textColor = UIColor.blackColor()
+        labelTitle.text = NSLocalizedString("Pull to refresh", comment: "Refresher")
+        superview.addSubview(labelTitle)
+        
     }
     
     func changeProgress(progress: CGFloat) {
         
         self.layerLoader.strokeEnd = progress
+    }
+    
+    func showPullToRefresh() {
+        labelTitle.text = NSLocalizedString("Pull to refresh", comment: "Refresher")
+
+    }
+    func showLoading() {
+        labelTitle.text = NSLocalizedString("Loading ...", comment: "Refresher")
+    }
+    
+    func showRelease() {
+        labelTitle.text = NSLocalizedString("Release to refresh", comment: "Refresher")
     }
 }

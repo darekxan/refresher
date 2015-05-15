@@ -33,11 +33,12 @@ public protocol PullToRefreshViewAnimator {
     func stopAnimation()
     func changeProgress(progress: CGFloat)
     func layoutLayers(superview: UIView)
+    func showLoading()
+    func showRelease()
+    func showPullToRefresh()
 }
 
 public class PullToRefreshView: UIView {
-    
-    public let labelTitle = UILabel() // this maybe should be added in animator???
 
     private var scrollViewBouncesDefaultValue: Bool = false
     private var scrollViewInsetsDefaultValue: UIEdgeInsets = UIEdgeInsetsZero
@@ -78,12 +79,6 @@ public class PullToRefreshView: UIView {
         
         super.init(frame: frame)
         self.autoresizingMask = .FlexibleWidth
-        labelTitle.frame = bounds
-        labelTitle.textAlignment = .Center
-        labelTitle.autoresizingMask = .FlexibleLeftMargin | .FlexibleRightMargin
-        labelTitle.textColor = UIColor.blackColor()
-        labelTitle.text = NSLocalizedString("Pull to refresh", comment: "Refresher")
-        addSubview(labelTitle)
     }
     
     public required init(coder aDecoder: NSCoder) {
@@ -132,15 +127,16 @@ public class PullToRefreshView: UIView {
                         if (scrollView?.dragging == false && loading == false) {
                             loading = true
                         } else if (loading == true) {
-                            labelTitle.text = NSLocalizedString("Loading ...", comment: "Refresher")
+                            animator.showLoading()
                         } else {
-                            labelTitle.text = NSLocalizedString("Release to refresh", comment: "Refresher")
+                            animator.showRelease()
                             animator.changeProgress(-offsetWithoutInsets / self.frame.size.height)
                         }
                     } else if (loading == true) {
-                        labelTitle.text = NSLocalizedString("Loading ...", comment: "Refresher")
+                        animator.showLoading()
                     } else if (offsetWithoutInsets < 0) {
-                        labelTitle.text = NSLocalizedString("Pull to refresh", comment: "Refresher")
+                        animator.showPullToRefresh()
+                        
                         animator.changeProgress(-offsetWithoutInsets / self.frame.size.height)
                     }
                     previousOffset = scrollView!.contentOffset.y
