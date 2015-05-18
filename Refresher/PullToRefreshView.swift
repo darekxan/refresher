@@ -136,10 +136,12 @@ public class PullToRefreshView: UIView {
                         animator.showLoading()
                     } else if (offsetWithoutInsets < 0) {
                         animator.showPullToRefresh()
-                        
                         animator.changeProgress(-offsetWithoutInsets / self.frame.size.height)
                     }
                     previousOffset = scrollView!.contentOffset.y
+                    if loading && scrollView?.dragging == true {
+                        adjustLoadingStateInsets(offsetWithoutInsets)
+                    }
                 }
             }
         } else {
@@ -147,6 +149,23 @@ public class PullToRefreshView: UIView {
         }
     }
     
+    private func adjustLoadingStateInsets(currentOffset: CGFloat) {
+        let scrollView = superview as! UIScrollView
+        var insets = scrollView.contentInset
+        if currentOffset < 0 {
+            insets.top = -fmax(currentOffset, -self.frame.height)
+        } else {
+            insets.top = 0
+        }
+        
+        UIView.animateWithDuration(0.096, delay: 0, options:nil, animations: {
+        scrollView.contentInset = insets
+            }, completion: {finished in
+               // self.animator.startAnimation()
+               // self.action()
+        })
+        
+    }
     
     //MARK: PullToRefreshView methods
 
@@ -158,7 +177,7 @@ public class PullToRefreshView: UIView {
         
         // we need to restore previous offset because we will animate scroll view insets and regular scroll view animating is not applied then
         scrollView.contentOffset.y = previousOffset
-        scrollView.bounces = false
+        //scrollView.bounces = false
         UIView.animateWithDuration(0.3, delay: 0, options:nil, animations: {
             scrollView.contentInset = insets
             scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, -insets.top)
