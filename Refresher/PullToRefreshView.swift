@@ -39,6 +39,8 @@ public protocol PullToRefreshViewAnimator {
 }
 
 public class PullToRefreshView: UIView {
+    
+    var suspended = false
 
     private var scrollViewBouncesDefaultValue: Bool = false
     private var scrollViewInsetsDefaultValue: UIEdgeInsets = UIEdgeInsetsZero
@@ -119,7 +121,7 @@ public class PullToRefreshView: UIView {
         
         if (context == &KVOContext) {
             var scrollView = superview as? UIScrollView
-            if (keyPath == contentOffsetKeyPath && object as? UIScrollView == scrollView) {
+            if (keyPath == contentOffsetKeyPath && object as? UIScrollView == scrollView && !suspended) {
                 var scrollView = object as? UIScrollView
                 if (scrollView != nil) {
                     var offsetWithoutInsets = previousOffset + scrollViewInsetsDefaultValue.top
@@ -158,11 +160,11 @@ public class PullToRefreshView: UIView {
             insets.top = 0
         }
         
+        suspended = true
         UIView.animateWithDuration(0.096, delay: 0, options:nil, animations: {
         scrollView.contentInset = insets
             }, completion: {finished in
-               // self.animator.startAnimation()
-               // self.action()
+              self.suspended = false
         })
         
     }
