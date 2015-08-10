@@ -197,7 +197,7 @@ public class PullToRefreshView: UIView {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             scrollView.contentInset = self.scrollViewInsetsDefaultValue
         }) { (Bool) -> Void in
-            self.animator.changeProgress(0)
+            self.animator.changeProgress(1) // this works for us
         }
     }
 }
