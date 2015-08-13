@@ -93,7 +93,7 @@ public class PullToRefreshView: UIView {
         self.autoresizingMask = .FlexibleWidth
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         self.animator = Animator(frame: CGRectZero)
         super.init(coder: aDecoder)
         // Currently it is not supported to load view from nib
@@ -118,8 +118,7 @@ public class PullToRefreshView: UIView {
     
     
     //MARK: KVO methods
-
-    public override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<()>) {
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if (context == &KVOContext) {
             if let scrollView = superview as? UIScrollView where object as? NSObject == scrollView {
                 if keyPath == ContentOffsetKeyPath {
@@ -158,7 +157,7 @@ public class PullToRefreshView: UIView {
         // we need to restore previous offset because we will animate scroll view insets and regular scroll view animating is not applied then
         scrollView.contentOffset.y = previousOffset
         scrollView.bounces = false
-        UIView.animateWithDuration(0.3, delay: 0, options:nil, animations: {
+        UIView.animateWithDuration(0.3, animations: {
             scrollView.contentInset = insets
             scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, -insets.top)
         }, completion: {finished in
