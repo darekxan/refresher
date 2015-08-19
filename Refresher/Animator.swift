@@ -45,7 +45,7 @@ class Animator: PullToRefreshViewAnimator {
     
     func startAnimation() {
         
-        var pathAnimationEnd = CABasicAnimation(keyPath: "strokeEnd")
+        let pathAnimationEnd = CABasicAnimation(keyPath: "strokeEnd")
         pathAnimationEnd.duration = 0.5
         pathAnimationEnd.repeatCount = 100
         pathAnimationEnd.autoreverses = true
@@ -53,7 +53,7 @@ class Animator: PullToRefreshViewAnimator {
         pathAnimationEnd.toValue = 1
         self.layerLoader.addAnimation(pathAnimationEnd, forKey: "strokeEndAnimation")
         
-        var pathAnimationStart = CABasicAnimation(keyPath: "strokeStart")
+        let pathAnimationStart = CABasicAnimation(keyPath: "strokeStart")
         pathAnimationStart.duration = 0.5
         pathAnimationStart.repeatCount = 100
         pathAnimationStart.autoreverses = true
@@ -75,11 +75,11 @@ class Animator: PullToRefreshViewAnimator {
         if layerSeparator.superlayer == nil {
             superview.layer.addSublayer(layerSeparator)
         }
-        var bezierPathLoader = UIBezierPath()
+        let bezierPathLoader = UIBezierPath()
         bezierPathLoader.moveToPoint(CGPointMake(0, superview.frame.height - 3))
         bezierPathLoader.addLineToPoint(CGPoint(x: superview.frame.width, y: superview.frame.height - 3))
         
-        var bezierPathSeparator = UIBezierPath()
+        let bezierPathSeparator = UIBezierPath()
         bezierPathSeparator.moveToPoint(CGPointMake(0, superview.frame.height - 1))
         bezierPathSeparator.addLineToPoint(CGPoint(x: superview.frame.width, y: superview.frame.height - 1))
         
@@ -89,7 +89,7 @@ class Animator: PullToRefreshViewAnimator {
         
         labelTitle.frame = superview.bounds
         labelTitle.textAlignment = .Center
-        labelTitle.autoresizingMask = .FlexibleLeftMargin | .FlexibleRightMargin
+        labelTitle.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         labelTitle.textColor = UIColor.blackColor()
         labelTitle.text = NSLocalizedString("Pull to refresh", comment: "Refresher")
         superview.addSubview(labelTitle)
